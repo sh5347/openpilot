@@ -108,24 +108,48 @@ static void ui_draw_line(UIState *s, const line_vertices_data &vd, NVGcolor *col
 static void ui_draw_vision_lane_lines(UIState *s) {
   const UIScene &scene = s->scene;
   NVGpaint track_bg;
-  if (!scene.end_to_end) {
-    // paint lanelines
-    for (int i = 0; i < std::size(scene.lane_line_vertices); i++) {
-      NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
-      ui_draw_line(s, scene.lane_line_vertices[i], &color, nullptr);
-    }
 
-    // paint road edges
-    for (int i = 0; i < std::size(scene.road_edge_vertices); i++) {
-      NVGcolor color = nvgRGBAf(1.0, 0.0, 0.0, std::clamp<float>(1.0 - scene.road_edge_stds[i], 0.0, 1.0));
-      ui_draw_line(s, scene.road_edge_vertices[i], &color, nullptr);
-    }
-    track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
-                                          COLOR_WHITE, COLOR_WHITE_ALPHA(0));
-  } else {
-    track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
-                                          COLOR_RED, COLOR_RED_ALPHA(0));
+  // paint lanelines
+  for (int i = 0; i < std::size(scene.lane_line_vertices); i++) {
+    NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+    ui_draw_line(s, scene.lane_line_vertices[i], &color, nullptr);
   }
+
+  // paint road edges
+  for (int i = 0; i < std::size(scene.road_edge_vertices); i++) {
+    NVGcolor color = nvgRGBAf(1.0, 0.0, 0.0, std::clamp<float>(1.0 - scene.road_edge_stds[i], 0.0, 1.0));
+    ui_draw_line(s, scene.road_edge_vertices[i], &color, nullptr);
+  }
+  
+  bool steeringPressed = scene.car_state.getSteeringPressed();
+  if(steeringPressed)
+  {
+    float steeringTorque = std::abs((float)scene.car_state.getSteeringTorque())-1200;
+    track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
+    nvgRGBA(255, (int)(255 - std::clamp<float>((steeringTorque/2000),0.0,1.0)*255), 0, 255), nvgRGBA(255, (int)(255 - std::clamp<float>((steeringTorque/2000),0.0,1.0)*255), 0, 0));
+  }
+  else
+  {
+    if(scene.paused)
+    {
+      track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
+                                                COLOR_WHITE, COLOR_WHITE_ALPHA(0));
+    }
+    else
+    {
+      if(scene.lkasEnabled && scene.enabled)
+      {
+          track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
+                                                    COLOR_GREEN, COLOR_GREEN_ALPHA(0));
+      }
+      else
+      {
+          track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
+                                                        COLOR_RED, COLOR_RED_ALPHA(0));
+      }
+    }
+  }
+  
   // paint path
   ui_draw_line(s, scene.track_vertices, nullptr, &track_bg);
 }

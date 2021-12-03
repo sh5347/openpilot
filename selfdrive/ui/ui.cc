@@ -114,7 +114,13 @@ static void update_state(UIState *s) {
   if (sm.frame % (UI_FREQ / 2) == 0) {
     auto cs = sm["controlsState"].getControlsState();
     scene.engageable = cs.getEngageable() || cs.getEnabled();
+    scene.paused = cs.getPaused();
+    scene.enabled = cs.getEnabled();
+    scene.lkasEnabled = cs.getLkasEnabled();
     scene.dm_active = sm["driverMonitoringState"].getDriverMonitoringState().getIsActiveMode();
+  }
+  if (sm.updated("carState")){
+    scene.car_state = sm["carState"].getCarState();
   }
   if (sm.updated("modelV2") && s->vg) {
     update_model(s, sm["modelV2"].getModelV2());

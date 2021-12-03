@@ -26,6 +26,8 @@
 #define COLOR_RED_ALPHA(x) nvgRGBA(201, 34, 49, x)
 #define COLOR_YELLOW nvgRGBA(218, 202, 37, 255)
 #define COLOR_RED nvgRGBA(201, 34, 49, 255)
+#define COLOR_GREEN nvgRGBA(0, 255, 0, 255)
+#define COLOR_GREEN_ALPHA(x) nvgRGBA(0, 255, 0, x)
 
 const int bdr_s = 30;
 const int header_h = 420;
@@ -113,6 +115,7 @@ typedef struct UIScene {
   mat3 view_from_calib;
   bool world_objects_visible;
 
+  cereal::CarState::Reader car_state;
   cereal::PandaState::PandaType pandaType;
 
   // modelV2
@@ -122,7 +125,7 @@ typedef struct UIScene {
   line_vertices_data lane_line_vertices[4];
   line_vertices_data road_edge_vertices[2];
 
-  bool dm_active, engageable;
+  bool dm_active, engageable, enabled, paused, lkasEnabled;
 
   // lead
   vertex_data lead_vertices[2];
