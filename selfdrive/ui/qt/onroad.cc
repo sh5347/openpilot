@@ -317,7 +317,7 @@ void NvgWindow::drawLaneLines(QPainter &painter, const UIScene &scene) {
   bool steeringPressed = scene.car_state.getSteeringPressed();
   if(steeringPressed)
   {
-    float steeringTorque = scene.car_state.getSteeringTorque();
+    float steeringTorque = std::abs((float)scene.car_state.getSteeringTorque())-1200;
     beginColour = QColor(255, (int)(255 - std::clamp<float>((steeringTorque/2000),0.0,1.0)*255), 0);
     endColour = QColor(255, (int)(255 - std::clamp<float>((steeringTorque/2000),0.0,1.0)*255), 0, 0);
   }
