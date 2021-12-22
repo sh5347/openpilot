@@ -487,7 +487,9 @@ class Controls:
 
     # DISABLED
     elif self.state == State.disabled:
-      if self.events.any(ET.ENABLE):
+      if (CS.brakePressed and CS.disengageByBrake) and (not CS.lkasEnabled) and self.events.any(ET.USER_DISABLE):
+        self.current_alert_types.append(ET.USER_DISABLE)
+      elif self.events.any(ET.ENABLE):
         if self.events.any(ET.NO_ENTRY):
           self.current_alert_types.append(ET.NO_ENTRY)
 
