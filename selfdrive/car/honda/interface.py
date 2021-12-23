@@ -444,7 +444,7 @@ class CarInterface(CarInterfaceBase):
       enable_pressed = True
       enable_from_brake = True
 
-    if (not self.CS.lkasEnabled) or (not ret.brakePressed and not ret.brakeHoldActive):
+    if not ret.brakePressed and not ret.brakeHoldActive:
       self.CS.disengageByBrake = False
       ret.disengageByBrake = False
     
