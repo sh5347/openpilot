@@ -139,7 +139,6 @@ static int honda_rx_hook(CANPacket_t *to_push) {
             controls_allowed = 0;
             break;
           }
-          [[fallthrough]];
         default:
           switch(button2)
           {
