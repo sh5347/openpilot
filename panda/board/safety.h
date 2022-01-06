@@ -221,10 +221,7 @@ void generic_rx_checks(bool stock_ecu_detected) {
   }else if (!brake_pressed && disengageFromBrakes)
   {
     disengageFromBrakes = false;
-    if(unsafe_mode & UNSAFE_RESUME_LKAS_AFTER_BRAKE)
-    {
-      controls_allowed = 1;
-    }
+    controls_allowed = 1;
   }
   brake_pressed_prev = brake_pressed;
 
