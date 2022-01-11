@@ -82,3 +82,10 @@ models/*.thneed
 build/
 
 !**/.gitkeep
+/.vs/ProjectSettings.json
+/.vs/openpilot-spektor-sh5347/v16/Browse.VC.opendb
+/.vs/openpilot-spektor-sh5347/v16/Browse.VC.db-wal
+/.vs/openpilot-spektor-sh5347/v16/Browse.VC.db-shm
+/.vs/openpilot-spektor-sh5347/v16/Browse.VC.db
+/.vs/openpilot-spektor-sh5347/v16
+/.vs/slnx.sqlite
